@@ -17,7 +17,7 @@ export default function Heading({
   };
 
   return (
-    <div className="w-full p-4 flex items-center justify-between border-b-1 border-white/10 border-solid">
+    <div className="w-full py-4 px-10 flex items-center justify-between border-b-1 border-foreground/10 border-solid">
       <div>
         <h2 className="text-2xl uppercase text-amber-500">
           {heading ? heading : "Page Heading"}

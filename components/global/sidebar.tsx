@@ -13,10 +13,12 @@ import {
   Contact,
   ShoppingBag,
   UserRoundCog,
+  BadgeCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { User } from "@supabase/supabase-js";
+import { useUser } from "@/providers/user-provider";
+import { Badge } from "@/components/ui/badge";
 
 interface MenuItem {
   title: string;
@@ -24,10 +26,14 @@ interface MenuItem {
   icon: LucideIcon;
 }
 
-export function GlobalSidebar({ userdata }: { userdata: User }) {
+export function GlobalSidebar() {
   const date = new Date();
   const pathname = usePathname();
-  const lastDate = new Date(userdata.last_sign_in_at as string);
+  const { user } = useUser();
+
+  console.log(user);
+
+  const lastDate = new Date(user?.last_sign_in_at as string);
 
   const pageLinks: MenuItem[] = [
     { title: "Dashboard", link: "/dashboard", icon: LayoutDashboard },
@@ -66,13 +72,13 @@ export function GlobalSidebar({ userdata }: { userdata: User }) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup />
-        <ul className="w-full p-2">
+        <ul className="w-full px-2 flex flex-col gap-4">
           {pageLinks.map((menuItem: MenuItem, index: number) => {
             return (
               <li key={`menuItem${index}`}>
                 <Link
                   href={menuItem.link}
-                  className={`w-full text-sm flex gap-3 items-center px-3 py-2 ${pathname === menuItem.link ? "bg-amber-500 text-black rounded-[8px]" : ""}`}
+                  className={`w-full text-sm flex gap-3 items-center px-3 py-2 ${pathname === menuItem.link ? "bg-[var(--primary)] text-background rounded-[8px]" : ""}`}
                 >
                   <menuItem.icon size={16} />
                   <span>{menuItem.title}</span>
@@ -84,28 +90,56 @@ export function GlobalSidebar({ userdata }: { userdata: User }) {
         <SidebarGroup />
       </SidebarContent>
       <SidebarFooter>
-        <div className="p-2 flex flex-col gap-1">
-          {lastDate && (
+        <SidebarGroup>
+          <div className="flex items-center gap-2 bg-foreground/10 p-2 rounded-[8px]">
+            <div className="rounded-full w-[35px] shrink-0 aspect-square overflow-hidden relative">
+              <Image
+                src={`https://api.dicebear.com/9.x/glass/png?seed=${user?.email}`}
+                fill
+                alt={`gradiant avatar for user`}
+              />
+            </div>
+            <div>
+              {user?.user_metadata?.display_name ? (
+                <p className="text-xs text-foreground">
+                  {user?.user_metadata?.display_name}
+                </p>
+              ) : (
+                <p className="text-xs text-foreground">{user?.email}</p>
+              )}
+              {user?.user_metadata.email_verified && (
+                <Badge variant="secondary">
+                  <BadgeCheck data-icon="inline-start" />
+                  Verified
+                </Badge>
+              )}
+            </div>
+          </div>
+        </SidebarGroup>
+        <SidebarGroup>
+          <div className="p-2 flex flex-col gap-1">
+            {lastDate && (
+              <p className="text-xs text-gray-600">
+                {" "}
+                Last Signed In:{" "}
+                {lastDate.toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+            )}
             <p className="text-xs text-gray-600">
-              {" "}
-              Last Signed In:{" "}
-              {lastDate.toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
+              &copy; {date.getFullYear()} Tri-Metal Fabricators
             </p>
-          )}
-          <p className="text-xs text-gray-600">
-            &copy; {date.getFullYear()} Tri-Metal Fabricators
-          </p>
-          <p className="text-xs text-gray-600">
-            Built by{" "}
-            <a href="https://tyronhayman.me" target="_blank">
-              Tyron Hayman
-            </a>
-          </p>
-        </div>
+            <p className="text-xs text-gray-600">
+              Built by{" "}
+              <a href="https://tyronhayman.me" target="_blank">
+                Tyron Hayman
+              </a>
+            </p>
+          </div>
+        </SidebarGroup>
       </SidebarFooter>
     </Sidebar>
   );

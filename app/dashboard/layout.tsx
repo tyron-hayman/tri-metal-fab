@@ -2,6 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { GlobalSidebar } from "@/components/global/sidebar";
 import { createClient } from "@/supabase/supabase-server";
 import { redirect } from "next/navigation";
+import { UserProvider } from "@/providers/user-provider";
 
 export default async function RootLayout({
   children,
@@ -17,10 +18,18 @@ export default async function RootLayout({
     redirect("/");
   }
 
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("uid", user.id)
+    .single();
+
   return (
-    <SidebarProvider>
-      <GlobalSidebar userdata={user} />
-      <main className="w-full relative">{children}</main>
-    </SidebarProvider>
+    <UserProvider user={user} profile={profile}>
+      <SidebarProvider>
+        <GlobalSidebar />
+        <main className="w-full relative">{children}</main>
+      </SidebarProvider>
+    </UserProvider>
   );
 }
