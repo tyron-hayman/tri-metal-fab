@@ -12,7 +12,7 @@ export default async function Page() {
         heading={data.heading ? data.heading : ""}
         subheading={data.description ? data.description : ""}
       />
-      <UserAccountForm />
+      <UserAccountForm data={data} />
     </div>
   );
 }

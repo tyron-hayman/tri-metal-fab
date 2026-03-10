@@ -70,6 +70,7 @@ export const profilePageQuery = `
   *[_type == "profilePage" && _id == "profilePage"][0] {
     heading,
     description,
+    formFooterContent,
     seo {
       metaTitle,
       metaDescription
@@ -80,6 +81,7 @@ export const profilePageQuery = `
 export type ProfilePageQueryResult = {
   heading: string | null;
   description: string | null;
+  formFooterContent: string | null;
   seo: {
     metaTitle: string | null;
     metaDescription: string | null;

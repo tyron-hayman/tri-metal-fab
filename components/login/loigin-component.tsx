@@ -79,10 +79,10 @@ export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-4xl">
+        <CardTitle className="text-4xl font-mono text-blanced">
           {data && data.heading ? data.heading : "User Login"}
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-lg">
           {data && data.subheading ? data.subheading : "User Login"}
         </CardDescription>
       </CardHeader>
@@ -90,10 +90,10 @@ export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
         <form>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="small-form-name">Name</FieldLabel>
+              <FieldLabel htmlFor="small-form-name">Email</FieldLabel>
               <Input
                 id="small-form-name"
-                placeholder="Enter your name"
+                placeholder="Enter your email"
                 onChange={(e) =>
                   setLoginData({
                     ...loginData,

@@ -19,6 +19,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
 import { Badge } from "@/components/ui/badge";
+import { formatedate } from "@/utils/tools";
 
 interface MenuItem {
   title: string;
@@ -30,10 +31,6 @@ export function GlobalSidebar() {
   const date = new Date();
   const pathname = usePathname();
   const { user } = useUser();
-
-  console.log(user);
-
-  const lastDate = new Date(user?.last_sign_in_at as string);
 
   const pageLinks: MenuItem[] = [
     { title: "Dashboard", link: "/dashboard", icon: LayoutDashboard },
@@ -78,7 +75,7 @@ export function GlobalSidebar() {
               <li key={`menuItem${index}`}>
                 <Link
                   href={menuItem.link}
-                  className={`w-full text-sm flex gap-3 items-center px-3 py-2 ${pathname === menuItem.link ? "bg-[var(--primary)] text-background rounded-[8px]" : ""}`}
+                  className={`w-full text-sm flex gap-3 items-center px-3 py-2 ${pathname === menuItem.link ? "bg-[var(--accent)] text-white rounded-4xl" : ""}`}
                 >
                   <menuItem.icon size={16} />
                   <span>{menuItem.title}</span>
@@ -91,24 +88,24 @@ export function GlobalSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarGroup>
-          <div className="flex items-center gap-2 bg-foreground/10 p-2 rounded-[8px]">
-            <div className="rounded-full w-[35px] shrink-0 aspect-square overflow-hidden relative">
+          <div className="flex items-center gap-3 bg-[var(--sidebar-accent)] p-3 rounded-[8px]">
+            <div className="rounded-full w-[40px] shrink-0 aspect-square overflow-hidden relative">
               <Image
-                src={`https://api.dicebear.com/9.x/glass/png?seed=${user?.email}`}
+                src={`https://ui-avatars.com/api/?name=${user?.user_metadata.display_name.replace(" ", "-")}&size=256`}
                 fill
                 alt={`gradiant avatar for user`}
               />
             </div>
             <div>
               {user?.user_metadata?.display_name ? (
-                <p className="text-xs text-foreground">
+                <p className="text-xs text-foreground mb-1">
                   {user?.user_metadata?.display_name}
                 </p>
               ) : (
-                <p className="text-xs text-foreground">{user?.email}</p>
+                <p className="text-xs text-foreground mb-1">{user?.email}</p>
               )}
               {user?.user_metadata.email_verified && (
-                <Badge variant="secondary">
+                <Badge variant="default">
                   <BadgeCheck data-icon="inline-start" />
                   Verified
                 </Badge>
@@ -118,15 +115,10 @@ export function GlobalSidebar() {
         </SidebarGroup>
         <SidebarGroup>
           <div className="p-2 flex flex-col gap-1">
-            {lastDate && (
+            {user && user.last_sign_in_at && (
               <p className="text-xs text-gray-600">
                 {" "}
-                Last Signed In:{" "}
-                {lastDate.toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
+                Last Signed In: {formatedate(user.last_sign_in_at)}
               </p>
             )}
             <p className="text-xs text-gray-600">
