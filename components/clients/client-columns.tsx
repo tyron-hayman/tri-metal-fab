@@ -17,6 +17,7 @@ import { createClient } from "@/supabase/supabase-client";
 import { toast } from "sonner";
 import Spinner from "../global/spinner";
 import { useState } from "react";
+import Link from "next/link";
 
 function ActionCell({ id, email }: { id: number; email: string }) {
   const supabase = createClient();
@@ -98,6 +99,9 @@ function ActionCell({ id, email }: { id: number; email: string }) {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Link href={`/dashboard/clients/${id}`}>Edit</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => confirmDeletion(id, email)}>
               Delete User
             </DropdownMenuItem>
@@ -105,10 +109,10 @@ function ActionCell({ id, email }: { id: number; email: string }) {
               Ban User
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => updateClientStatus("active")}>
-              Set User as active
+              Set as active
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => updateClientStatus("inactive")}>
-              Set User as inactive
+              Set as inactive
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

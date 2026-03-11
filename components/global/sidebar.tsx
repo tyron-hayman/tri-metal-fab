@@ -71,11 +71,16 @@ export function GlobalSidebar() {
         <SidebarGroup />
         <ul className="w-full px-2 flex flex-col gap-4">
           {pageLinks.map((menuItem: MenuItem, index: number) => {
+            const isActive =
+              menuItem.link === "/dashboard"
+                ? pathname === "/dashboard"
+                : pathname.startsWith(menuItem.link);
+
             return (
               <li key={`menuItem${index}`}>
                 <Link
                   href={menuItem.link}
-                  className={`w-full text-sm flex gap-3 items-center px-3 py-2 ${pathname === menuItem.link ? "bg-[var(--accent)] text-white rounded-4xl" : ""}`}
+                  className={`w-full text-sm flex gap-3 items-center px-3 py-2 ${isActive ? "bg-[var(--accent)] text-white rounded-4xl" : ""}`}
                 >
                   <menuItem.icon size={16} />
                   <span>{menuItem.title}</span>
