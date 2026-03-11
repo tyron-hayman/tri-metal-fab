@@ -12,6 +12,110 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/supabase/supabase-client";
+import { toast } from "sonner";
+import Spinner from "../global/spinner";
+import { useState } from "react";
+
+function ActionCell({ id, email }: { id: number; email: string }) {
+  const supabase = createClient();
+  const router = useRouter();
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+
+  const confirmDeletion = (id: number, user_email: string): void => {
+    toast(
+      `Are you sure you want to delete user with the email ${user_email}?`,
+      {
+        action: (
+          <Button variant="destructive" onClick={() => deleteClient(id)}>
+            Delete
+          </Button>
+        ),
+      },
+    );
+  };
+
+  const deleteClient = async (id: number) => {
+    setIsUpdating(true);
+    try {
+      const { error } = await supabase.from("tmfClients").delete().eq("id", id);
+
+      if (error) {
+        toast.error(error.message, { duration: 5000 });
+        setIsUpdating(false);
+        return;
+      }
+
+      setIsUpdating(false);
+      router.refresh();
+    } catch {
+      toast.error("An error occured while deleting the client.", {
+        duration: 5000,
+      });
+      setIsUpdating(false);
+    }
+  };
+
+  const updateClientStatus = async (
+    newStatus: "active" | "banned" | "inactive",
+  ): Promise<void> => {
+    setIsUpdating(true);
+    try {
+      const { error } = await supabase
+        .from("tmfClients")
+        .update({ status: newStatus })
+        .eq("id", id);
+
+      if (error) {
+        toast.error(error.message, { duration: 5000 });
+        setIsUpdating(false);
+        return;
+      }
+
+      setIsUpdating(false);
+      router.refresh();
+    } catch {
+      toast.error("An error occured while updating the client.", {
+        duration: 5000,
+      });
+      setIsUpdating(false);
+    }
+  };
+
+  return (
+    <>
+      {isUpdating ? (
+        <Spinner classes="size-6" />
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => confirmDeletion(id, email)}>
+              Delete User
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => updateClientStatus("banned")}>
+              Ban User
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => updateClientStatus("active")}>
+              Set User as active
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => updateClientStatus("inactive")}>
+              Set User as inactive
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </>
+  );
+}
 
 const clientColumns: ColumnDef<TMFClients>[] = [
   {
@@ -67,28 +171,12 @@ const clientColumns: ColumnDef<TMFClients>[] = [
   {
     accessorKey: "action",
     header: "Action",
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete User</DropdownMenuItem>
-            <DropdownMenuItem>Banner User</DropdownMenuItem>
-            <DropdownMenuItem>Set User as active</DropdownMenuItem>
-            <DropdownMenuItem>Set User as inactive</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => (
+      <ActionCell
+        id={row.original.id as number}
+        email={row.original.email as string}
+      />
+    ),
   },
 ];
 

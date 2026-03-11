@@ -15,6 +15,7 @@ import { createClient } from "@/supabase/supabase-client";
 import { isValidEmail } from "@/utils/tools";
 import { toast } from "sonner";
 import Image from "next/image";
+import ImageUpload from "../global/image-uploader";
 
 interface AccountData {
   displayName: string | null;
@@ -37,6 +38,14 @@ export default function UserAccountForm({
     passwordConf: null,
     email: null,
   });
+
+  const uploadToSupabase = async (file: File) => {
+    const path = `images/${Date.now()}-${file.name}`;
+    const { error } = await supabase.storage
+      .from("userImages")
+      .upload(path, file);
+    if (error) throw error;
+  };
 
   const handleSave = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
