@@ -18,8 +18,8 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
-import { Badge } from "@/components/ui/badge";
-import { formatedate } from "@/utils/tools";
+import { NavUser } from "./sidebar-user";
+import type { User } from "@supabase/supabase-js";
 
 interface MenuItem {
   title: string;
@@ -28,9 +28,9 @@ interface MenuItem {
 }
 
 export function GlobalSidebar() {
-  const date = new Date();
   const pathname = usePathname();
   const { user } = useUser();
+  const date = new Date();
 
   const pageLinks: MenuItem[] = [
     { title: "Dashboard", link: "/dashboard", icon: LayoutDashboard },
@@ -39,11 +39,6 @@ export function GlobalSidebar() {
       title: "Purchase Orders",
       link: "/purchase_orders",
       icon: ShoppingBag,
-    },
-    {
-      title: "Profile / Account",
-      link: "/dashboard/account",
-      icon: UserRoundCog,
     },
   ];
 
@@ -93,43 +88,14 @@ export function GlobalSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarGroup>
-          <div className="flex items-center gap-3 bg-[var(--sidebar-accent)] p-3 rounded-[8px]">
-            <div className="rounded-full w-[40px] shrink-0 aspect-square overflow-hidden relative">
-              <Image
-                src={`https://ui-avatars.com/api/?name=${user?.user_metadata.display_name.replace(" ", "-")}&size=256`}
-                fill
-                alt={`gradiant avatar for user`}
-              />
-            </div>
-            <div>
-              {user?.user_metadata?.display_name ? (
-                <p className="text-xs text-foreground mb-1">
-                  {user?.user_metadata?.display_name}
-                </p>
-              ) : (
-                <p className="text-xs text-foreground mb-1">{user?.email}</p>
-              )}
-              {user?.user_metadata.email_verified && (
-                <Badge variant="default">
-                  <BadgeCheck data-icon="inline-start" />
-                  Verified
-                </Badge>
-              )}
-            </div>
-          </div>
+          <NavUser user={user as User} />
         </SidebarGroup>
         <SidebarGroup>
-          <div className="p-2 flex flex-col gap-1">
-            {user && user.last_sign_in_at && (
-              <p className="text-xs text-gray-600">
-                {" "}
-                Last Signed In: {formatedate(user.last_sign_in_at)}
-              </p>
-            )}
-            <p className="text-xs text-gray-600">
+          <div className="w-full flex flex-col">
+            <p className="text-[0.7rem] text-gray-600">
               &copy; {date.getFullYear()} Tri-Metal Fabricators
             </p>
-            <p className="text-xs text-gray-600">
+            <p className="text-[0.7rem] text-gray-600">
               Built by{" "}
               <a href="https://tyronhayman.me" target="_blank">
                 Tyron Hayman

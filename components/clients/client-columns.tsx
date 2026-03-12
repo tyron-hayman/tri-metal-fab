@@ -87,7 +87,7 @@ function ActionCell({ id, email }: { id: number; email: string }) {
   return (
     <>
       {isUpdating ? (
-        <Spinner classes="size-6" />
+        <Spinner classes="size-4" />
       ) : (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
