@@ -83,7 +83,7 @@ export default function ClientTableNav() {
           variant="default"
           onClick={(e) => setShowModal(true)}
         >
-          Add Client <Plus className="size-6" />
+          Add Client <Plus className="size-3" />
         </Button>
       </div>
       <AnimatePresence>

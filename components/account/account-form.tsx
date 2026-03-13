@@ -134,16 +134,6 @@ export default function UserAccountForm({
           </div>
           <div className="w-8/12">
             <FieldGroup>
-              <div className="w-[100px] aspect-square relative rounded-full bg-white overflow-hidden mb-10">
-                <Image
-                  src={`https://api.dicebear.com/9.x/notionists/jpg?seed=${encodeURIComponent(user?.email as string)}?size=96&backgroundColor=3b82f6`}
-                  fill
-                  className="object-fill"
-                  alt=""
-                />
-              </div>
-            </FieldGroup>
-            <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="form-name">Display Name</FieldLabel>
                 <Input

@@ -16,15 +16,13 @@ export default async function Page({
     .eq("id", id)
     .single();
 
-  console.log(client);
-
   return (
     <div className="w-full min-h-screen">
       <Heading
         heading={`${client.firstname} ${client.lastname}`}
         subheading={"Manage Client"}
       />
-      <ClientAccountForm data={client} />
+      <ClientAccountForm data={client} id={id} />
     </div>
   );
 }

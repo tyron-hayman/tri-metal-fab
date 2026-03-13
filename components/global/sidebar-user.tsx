@@ -55,15 +55,8 @@ export function NavUser({ user }: { user: User }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground border-[var(--sidebar-border)] border-1"
+              className="bg-primary data-[state=open]:bg-accent data-[state=open]:text-sidebar-accent-foreground border-[var(--sidebar-border)] border-1"
             >
-              <div className="rounded-full w-[30px] shrink-0 aspect-square overflow-hidden relative">
-                <Image
-                  src={`https://api.dicebear.com/9.x/notionists/jpg?seed=${encodeURIComponent(user?.email as string)}?size=96&backgroundColor=3b82f6`}
-                  fill
-                  alt={`gradiant avatar for user`}
-                />
-              </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 {user?.user_metadata.display_name ? (
                   <span className="truncate font-medium">
@@ -83,17 +76,10 @@ export function NavUser({ user }: { user: User }) {
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <div className="rounded-full w-[40px] shrink-0 aspect-square overflow-hidden relative">
-                  <Image
-                    src={`https://api.dicebear.com/9.x/notionists/jpg?seed=${encodeURIComponent(user?.email as string)}?size=96&backgroundColor=3b82f6`}
-                    fill
-                    alt={`gradiant avatar for user`}
-                  />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="flex items-center gap-2 p-2 text-left text-sm">
+                <div className="grid flex-1 text-left text-xs leading-tight">
                   {user?.user_metadata.display_name && (
-                    <span className="truncate font-medium">
+                    <span className="truncate font-black">
                       {user?.user_metadata.display_name}
                     </span>
                   )}

@@ -12,8 +12,7 @@ import {
   LayoutDashboard,
   Contact,
   ShoppingBag,
-  UserRoundCog,
-  BadgeCheck,
+  Wrench,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -35,6 +34,7 @@ export function GlobalSidebar() {
   const pageLinks: MenuItem[] = [
     { title: "Dashboard", link: "/dashboard", icon: LayoutDashboard },
     { title: "Clients", link: "/dashboard/clients", icon: Contact },
+    { title: "Builds", link: "/dashboard/builds", icon: Wrench },
     {
       title: "Purchase Orders",
       link: "/purchase_orders",

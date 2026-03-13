@@ -11,13 +11,29 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, CircleUserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/supabase/supabase-client";
 import { toast } from "sonner";
 import Spinner from "../global/spinner";
 import { useState } from "react";
 import Link from "next/link";
+
+function getGradient(str: string) {
+  const gradients = [
+    "bg-gradient-to-r from-purple-500 to-pink-500",
+    "bg-gradient-to-r from-orange-400 to-red-500",
+    "bg-gradient-to-r from-violet-500 to-purple-600",
+    "bg-gradient-to-r from-sky-400 to-indigo-500",
+    "bg-gradient-to-r from-rose-400 to-pink-600",
+    "bg-gradient-to-r from-amber-400 to-orange-500",
+    "bg-gradient-to-r from-teal-400 to-cyan-500",
+    "bg-gradient-to-r from-lime-400 to-green-500",
+    "bg-gradient-to-r from-blue-500 to-indigo-600",
+  ];
+  const index = str.charCodeAt(0) % gradients.length;
+  return gradients[index];
+}
 
 function ActionCell({ id, email }: { id: number; email: string }) {
   const supabase = createClient();
@@ -122,6 +138,28 @@ function ActionCell({ id, email }: { id: number; email: string }) {
 }
 
 const clientColumns: ColumnDef<TMFClients>[] = [
+  {
+    accessorKey: "profileImg",
+    header: () => {
+      return <CircleUserRound className="size-4 mx-auto" />;
+    },
+    cell: ({ row }) => {
+      const randomGradient = getGradient(row.original.firstname);
+
+      return (
+        <div
+          className={`rounded-full mx-auto w-[35px] h-[35px] flex items-center justify-center ${randomGradient}`}
+        >
+          <div>
+            <p className="text-sm text-white font-mono font-black">
+              {row.original.firstname.charAt(0)}
+              {row.original.lastname.charAt(0)}
+            </p>
+          </div>
+        </div>
+      );
+    },
+  },
   {
     accessorKey: "firstname",
     header: "First Name",
