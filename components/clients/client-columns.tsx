@@ -148,7 +148,7 @@ const clientColumns: ColumnDef<TMFClients>[] = [
 
       return (
         <div
-          className={`rounded-full mx-auto w-[35px] h-[35px] flex items-center justify-center ${randomGradient}`}
+          className={`rounded-full mx-auto w-[35px] h-[35px] flex items-center justify-center noise ${randomGradient}`}
         >
           <div>
             <p className="text-sm text-white font-mono font-black">
