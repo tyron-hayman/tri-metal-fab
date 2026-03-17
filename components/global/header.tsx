@@ -1,5 +1,4 @@
 "use client";
-import ThemeSwitch from "@/components/global/theme-switcher";
 
 export default function Heading({
   heading,
@@ -17,9 +16,6 @@ export default function Heading({
         <p className="text-sm text-foreground/40">
           {subheading ? subheading : "Page Sub Heading"}
         </p>
-      </div>
-      <div className="flex items-center gap-3">
-        <ThemeSwitch />
       </div>
     </div>
   );

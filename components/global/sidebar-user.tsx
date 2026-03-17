@@ -21,7 +21,6 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { createClient } from "@/supabase/supabase-client";
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
@@ -55,7 +54,7 @@ export function NavUser({ user }: { user: User }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="bg-primary data-[state=open]:bg-accent data-[state=open]:text-sidebar-accent-foreground border-[var(--sidebar-border)] border-1"
+              className="bg-muted data-[state=open]:bg-accent data-[state=open]:text-sidebar-accent-foreground border-[var(--sidebar-border)] border-1"
             >
               <div className="grid flex-1 text-left text-sm leading-tight">
                 {user?.user_metadata.display_name ? (

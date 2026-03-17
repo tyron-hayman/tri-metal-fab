@@ -19,6 +19,7 @@ import { usePathname } from "next/navigation";
 import { useUser } from "@/providers/user-provider";
 import { NavUser } from "./sidebar-user";
 import type { User } from "@supabase/supabase-js";
+import ThemeSwitch from "@/components/global/theme-switcher";
 
 interface MenuItem {
   title: string;
@@ -35,11 +36,6 @@ export function GlobalSidebar() {
     { title: "Dashboard", link: "/dashboard", icon: LayoutDashboard },
     { title: "Clients", link: "/dashboard/clients", icon: Contact },
     { title: "Builds", link: "/dashboard/builds", icon: Wrench },
-    {
-      title: "Purchase Orders",
-      link: "/purchase_orders",
-      icon: ShoppingBag,
-    },
   ];
 
   return (
@@ -102,6 +98,9 @@ export function GlobalSidebar() {
               </a>
             </p>
           </div>
+        </SidebarGroup>
+        <SidebarGroup>
+          <ThemeSwitch />
         </SidebarGroup>
       </SidebarFooter>
     </Sidebar>
