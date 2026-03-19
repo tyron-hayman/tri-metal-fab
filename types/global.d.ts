@@ -16,5 +16,6 @@ declare type TMFClients = {
   email: string;
   phone: string;
   address: string;
-  satus?: "active" | "banned" | "inactive";
+  satus?: "active" | "unresponsive" | "inactive";
+  company: string;
 };

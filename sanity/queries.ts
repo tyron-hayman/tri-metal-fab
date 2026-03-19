@@ -5,6 +5,7 @@ export const loginPageQuery = `
   maintenanceMode,
     heading,
     subheading,
+    formDisclaimer,
     seo {
       metaTitle,
       metaDescription
@@ -16,6 +17,7 @@ export type LoginPageQueryResult = {
   maintenanceMode: boolean;
   heading: string | null;
   subheading: string | null;
+  formDisclaimer: string | null;
   seo: {
     metaTitle: string | null;
     metaDescription: string | null;

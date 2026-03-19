@@ -22,6 +22,7 @@ export default function ClientTableNav() {
     email: "",
     phone: "",
     address: "",
+    company: "",
   });
 
   const addClient = async (
@@ -35,7 +36,8 @@ export default function ClientTableNav() {
       clientData.lastname == "" ||
       clientData.email == "" ||
       clientData.address == "" ||
-      clientData.phone == ""
+      clientData.phone == "" ||
+      clientData.company == ""
     ) {
       toast.error("Please fill in all fiends.");
       setIsSubmitting(false);
@@ -81,6 +83,7 @@ export default function ClientTableNav() {
         <Button
           type="button"
           variant="default"
+          size="lg"
           onClick={(e) => setShowModal(true)}
         >
           Add Client <Plus className="size-3" />
@@ -134,7 +137,7 @@ export default function ClientTableNav() {
                         />
                       </Field>
                     </FieldGroup>
-                    <FieldGroup className=" my-5">
+                    <FieldGroup className="flex flex-row gap-5 my-5">
                       <Field>
                         <FieldLabel htmlFor="client-form-email">
                           Email
@@ -147,6 +150,22 @@ export default function ClientTableNav() {
                             setClientData({
                               ...clientData,
                               email: e.currentTarget.value,
+                            })
+                          }
+                        />
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor="client-form-company">
+                          Company
+                        </FieldLabel>
+                        <Input
+                          id="client-form-company"
+                          placeholder="Enter client company"
+                          required
+                          onChange={(e) =>
+                            setClientData({
+                              ...clientData,
+                              company: e.currentTarget.value,
                             })
                           }
                         />

@@ -59,7 +59,7 @@ function ActionCell({ id, email }: { id: number; email: string }) {
   };
 
   const updateClientStatus = async (
-    newStatus: "active" | "banned" | "inactive",
+    newStatus: "active" | "unresponsive" | "inactive",
   ): Promise<void> => {
     setIsUpdating(true);
     try {
@@ -105,8 +105,10 @@ function ActionCell({ id, email }: { id: number; email: string }) {
             <DropdownMenuItem onClick={() => confirmDeletion(id, email)}>
               Delete User
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => updateClientStatus("banned")}>
-              Ban User
+            <DropdownMenuItem
+              onClick={() => updateClientStatus("unresponsive")}
+            >
+              Set as unresponsive
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => updateClientStatus("active")}>
               Set as active
@@ -121,27 +123,20 @@ function ActionCell({ id, email }: { id: number; email: string }) {
   );
 }
 
+const StatusBade = ({ value }: { value: string }) => {
+  return (
+    <div className="flex items-center gap-3">
+      <div
+        className={`w-[5px] animate-pulse h-[5px] rounded-full ${value == "active" && "bg-emerald-500"} ${value == "inactive" && "bg-foreground"} ${value == "unresponsive" && "bg-red-500"} `}
+      ></div>
+      <div>
+        <p className="text-sm uppercase">{value}</p>
+      </div>
+    </div>
+  );
+};
+
 const clientColumns: ColumnDef<TMFClients>[] = [
-  {
-    accessorKey: "profileImg",
-    header: () => {
-      return <CircleUserRound className="size-4 mx-auto" />;
-    },
-    cell: ({ row }) => {
-      return (
-        <div
-          className={`rounded-full mx-auto w-[35px] h-[35px] flex items-center justify-center border-white border-solid border-1`}
-        >
-          <div>
-            <p className="text-sm text-white font-mono font-black">
-              {row.original.firstname.charAt(0)}
-              {row.original.lastname.charAt(0)}
-            </p>
-          </div>
-        </div>
-      );
-    },
-  },
   {
     accessorKey: "firstname",
     header: "First Name",
@@ -167,6 +162,15 @@ const clientColumns: ColumnDef<TMFClients>[] = [
   {
     accessorKey: "address",
     header: "Address",
+    cell: ({ getValue }) => {
+      const value = getValue();
+
+      return (
+        <div className="w-[200px] text-wrap">
+          <p>{value as string}</p>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "status",
@@ -174,12 +178,7 @@ const clientColumns: ColumnDef<TMFClients>[] = [
     cell: ({ getValue }) => {
       const value = getValue();
 
-      if (value === "active") return <Badge variant="default">{value}</Badge>;
-      if (value === "banned")
-        return <Badge variant="destructive">{value}</Badge>;
-      if (value === "inactive")
-        return <Badge variant="secondary">{value}</Badge>;
-      return <Badge>Active</Badge>;
+      return <StatusBade value={value as string} />;
     },
   },
   {

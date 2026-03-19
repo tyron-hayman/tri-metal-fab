@@ -30,7 +30,7 @@ interface AccountData {
   email: string | null;
   phone: string | null;
   address: string | null;
-  status: "active" | "inactive" | "banned";
+  status: "active" | "inactive" | "unresponsive";
 }
 
 export default function ClientAccountForm({
@@ -49,7 +49,7 @@ export default function ClientAccountForm({
     email: data.email,
     phone: data.phone,
     address: data.address,
-    status: data.satus as "active" | "inactive" | "banned",
+    status: data.satus as "active" | "inactive" | "unresponsive",
   });
 
   const handleSave = async (
@@ -177,7 +177,7 @@ export default function ClientAccountForm({
                       status: value as unknown as
                         | "active"
                         | "inactive"
-                        | "banned",
+                        | "unresponsive",
                     });
                   }}
                 >
@@ -188,8 +188,8 @@ export default function ClientAccountForm({
                     <SelectGroup>
                       <SelectLabel>Status</SelectLabel>
                       <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="unresponsive">unresponsive</SelectItem>
                       <SelectItem value="inactive">Inactive</SelectItem>
-                      <SelectItem value="banned">Banned</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -215,7 +215,7 @@ export default function ClientAccountForm({
             </FieldGroup>
             <FieldGroup>
               <FieldLabel htmlFor="form-address">Address</FieldLabel>
-              <Textarea
+              <Input
                 id="form-address"
                 defaultValue={data.address}
                 onChange={(e) =>

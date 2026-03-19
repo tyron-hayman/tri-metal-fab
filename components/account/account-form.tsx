@@ -216,6 +216,7 @@ export default function UserAccountForm({
               <Button
                 className="w-[200px]"
                 variant="default"
+                size="lg"
                 type="button"
                 onClick={(e) => handleSave(e)}
               >

@@ -16,10 +16,10 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Bell } from "lucide-react";
 import Spinner from "../global/spinner";
-import { LoginPageQueryResult } from "@/sanity/queries";
 import ThemeSwitch from "@/components/global/theme-switcher";
 import { createClient } from "@/supabase/supabase-client";
 import { useRouter } from "next/navigation";
+import { LoginPageQueryResult } from "@/sanity/queries";
 
 export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
   const [loginData, setLoginData] = React.useState<{
@@ -77,61 +77,49 @@ export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
   };
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle className="text-4xl font-mono text-blanced">
-          {data && data.heading ? data.heading : "User Login"}
-        </CardTitle>
-        <CardDescription className="text-lg">
-          {data && data.subheading ? data.subheading : "User Login"}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
-          <FieldGroup>
-            <Field>
-              <FieldLabel htmlFor="small-form-name">Email</FieldLabel>
-              <Input
-                id="small-form-name"
-                placeholder="Enter your email"
-                onChange={(e) =>
-                  setLoginData({
-                    ...loginData,
-                    username: e.currentTarget.value,
-                  })
-                }
-                required
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="small-form-password">Password</FieldLabel>
-              <Input
-                type="password"
-                id="small-form-password"
-                placeholder="Enter your password"
-                onChange={(e) =>
-                  setLoginData({
-                    ...loginData,
-                    password: e.currentTarget.value,
-                  })
-                }
-                required
-              />
-            </Field>
-            <Field orientation="horizontal">
-              <Button type="button" onClick={(e) => handleLogin(e)}>
-                {!isSubmitting ? "Login" : <Spinner />}
-              </Button>
-              <Button variant="outline" type="button">
-                Forgot Password
-              </Button>
-            </Field>
-          </FieldGroup>
-        </form>
-      </CardContent>
-      <CardFooter>
-        <ThemeSwitch />
-      </CardFooter>
-    </Card>
+    <form>
+      <FieldGroup>
+        <Field>
+          <Input
+            id="small-form-name"
+            placeholder="Enter your email"
+            onChange={(e) =>
+              setLoginData({
+                ...loginData,
+                username: e.currentTarget.value,
+              })
+            }
+            required
+          />
+        </Field>
+        <Field>
+          <Input
+            type="password"
+            id="small-form-password"
+            placeholder="Enter your password"
+            onChange={(e) =>
+              setLoginData({
+                ...loginData,
+                password: e.currentTarget.value,
+              })
+            }
+            required
+          />
+        </Field>
+        <Field orientation="horizontal" className="gap-5 mt-5">
+          <Button size="lg" type="button" onClick={(e) => handleLogin(e)}>
+            {!isSubmitting ? "Login" : <Spinner />}
+          </Button>
+          <Button size="lg" variant="outline" type="button">
+            Forgot Password
+          </Button>
+        </Field>
+        <Field className="border-t-muted border-t-1 border-solid pt-3">
+          <p className="text-xs leading-relaxed text-foreground/50">
+            {data.formDisclaimer}
+          </p>
+        </Field>
+      </FieldGroup>
+    </form>
   );
 }
