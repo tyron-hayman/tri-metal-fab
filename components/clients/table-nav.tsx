@@ -2,7 +2,7 @@
 import { createClient } from "@/supabase/supabase-client";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { Plus, Tornado } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -98,7 +98,14 @@ export default function ClientTableNav() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="w-[600px] bg-[var(--card)] rounded-4xl p-10">
+            <div className="w-[600px] bg-[var(--card)] rounded-4xl p-10 relative">
+              <div
+                className="absolute right-10 top-10 z-[2] cursor-pointer"
+                onClick={(e) => setShowModal(false)}
+                role="button"
+              >
+                <X className="size-6" />
+              </div>
               <h2 className="text-2xl font-mono text-[var(--card-foreground)]">
                 Add Client
                 <div className="mt-10">
@@ -212,6 +219,7 @@ export default function ClientTableNav() {
                         type="button"
                         variant="default"
                         onClick={(e) => addClient(e)}
+                        size="lg"
                       >
                         {!isSubmitting ? "Add" : <Spinner />}
                       </Button>

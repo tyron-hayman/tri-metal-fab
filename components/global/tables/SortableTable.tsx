@@ -54,18 +54,29 @@ export function DataTable<TData, TValue>({
         </TableHeader>
         <TableBody className="[&>tr>td]:text-sm">
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+            table.getRowModel().rows.map((row) => {
+              const status = row.getValue<string>("status");
+              return (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className={`
+                  ${status === "unresponsive" && "border-r-rose-500 !border-r-3 border-solid"}
+                  ${status === "inactive" && "border-r-amber-500 !border-r-3 border-solid"}
+                  ${status === "active" && "border-r-emerald-500 !border-r-3 border-solid"}
+                `}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">

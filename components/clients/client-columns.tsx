@@ -146,6 +146,10 @@ const clientColumns: ColumnDef<TMFClients>[] = [
     header: "Last Name",
   },
   {
+    accessorKey: "company",
+    header: "Company",
+  },
+  {
     accessorKey: "email",
     header: "Email",
   },
@@ -157,19 +161,6 @@ const clientColumns: ColumnDef<TMFClients>[] = [
       const phoneNumber = formatPhone(value as string);
 
       return phoneNumber;
-    },
-  },
-  {
-    accessorKey: "address",
-    header: "Address",
-    cell: ({ getValue }) => {
-      const value = getValue();
-
-      return (
-        <div className="w-[200px] text-wrap">
-          <p>{value as string}</p>
-        </div>
-      );
     },
   },
   {
