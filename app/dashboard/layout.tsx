@@ -3,6 +3,7 @@ import { GlobalSidebar } from "@/components/global/sidebar";
 import { createClient } from "@/supabase/supabase-server";
 import { redirect } from "next/navigation";
 import { UserProvider } from "@/providers/user-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default async function RootLayout({
   children,
@@ -26,10 +27,12 @@ export default async function RootLayout({
 
   return (
     <UserProvider user={user} profile={profile}>
-      <SidebarProvider>
-        <GlobalSidebar />
-        <main className="w-full relative">{children}</main>
-      </SidebarProvider>
+      <TooltipProvider>
+        <SidebarProvider>
+          <GlobalSidebar />
+          <main className="w-full relative">{children}</main>
+        </SidebarProvider>
+      </TooltipProvider>
     </UserProvider>
   );
 }

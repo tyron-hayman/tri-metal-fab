@@ -2,6 +2,7 @@ import { client } from "@/sanity/client";
 import { BuildsPageQuery, BuildsPageQueryResult } from "@/sanity/queries";
 import Heading from "@/components/global/header";
 import MaintenanceMode from "@/components/global/MaintenanceMode";
+import BuildCards from "@/components/builds/BuildCards";
 
 export default async function Page() {
   const data = await client.fetch<BuildsPageQueryResult>(BuildsPageQuery);
@@ -16,6 +17,7 @@ export default async function Page() {
             heading={data.heading ? data.heading : ""}
             subheading={data.description ? data.description : ""}
           />
+          <BuildCards />
         </>
       )}
     </div>

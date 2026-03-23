@@ -19,3 +19,14 @@ declare type TMFClients = {
   satus?: "active" | "unresponsive" | "inactive";
   company: string;
 };
+
+declare type TMFBuilds = {
+  id?: number;
+  buildID: string;
+  created_at?: string;
+  name: string;
+  status: "scheduled" | "completed" | "in progress";
+  clientList?: JSON;
+  comments?: JSON;
+  assets?: JSON;
+};
