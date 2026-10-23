@@ -1,8 +1,4 @@
-import type { Metadata } from "next";
 import { Lexend, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -15,12 +11,6 @@ const lexendSans = Lexend({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Tri-Metal Fabricators",
-  description:
-    "Old-Fashioned Craftsmanship. Precision steel fabrication, superior production standards, and exacting industry standards for metal fabrication.",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,11 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${lexendSans.variable} ${jetbrainsMono.variable} antialiased`}
-      >
-        <TooltipProvider>{children}</TooltipProvider>
-        <Toaster position="top-right" />
+      <body className={`${lexendSans.variable} ${jetbrainsMono.variable}`}>
+        {children}
       </body>
     </html>
   );

@@ -140,7 +140,7 @@ export default function UserAccountForm({
                   id="form-name"
                   type="text"
                   defaultValue={user?.user_metadata.display_name}
-                  placeholder="Evil Rabbit"
+                  placeholder="John Doe"
                   required
                   onChange={(e) =>
                     setAccountData({

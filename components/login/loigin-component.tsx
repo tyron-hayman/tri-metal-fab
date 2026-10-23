@@ -2,24 +2,19 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Bell } from "lucide-react";
 import Spinner from "../global/spinner";
-import ThemeSwitch from "@/components/global/theme-switcher";
 import { createClient } from "@/supabase/supabase-client";
 import { useRouter } from "next/navigation";
 import { LoginPageQueryResult } from "@/sanity/queries";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
   const [loginData, setLoginData] = React.useState<{
@@ -30,6 +25,7 @@ export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
     password: null,
   });
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
+  const [isResetting, setIsResetting] = React.useState<boolean>(false);
   const supabase = createClient();
   const router = useRouter();
 
@@ -60,8 +56,6 @@ export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
           setIsSubmitting(false);
           return false;
         }
-
-        router.push("/dashboard");
       } catch {
         toast.error(
           "There was an error logging you in. Please try again soon.",
@@ -70,10 +64,52 @@ export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
             icon: <Bell size={20} />,
           },
         );
+      } finally {
+        setIsSubmitting(false);
+        router.push("/dashboard/");
       }
     }
-    setIsSubmitting(false);
     return false;
+  };
+
+  const handleForgotPassword = async () => {
+    const email = loginData.username?.trim();
+
+    if (!email) {
+      toast.error("Enter your email above, then click Forgot Password", {
+        duration: 5000,
+        icon: <Bell size={20} />,
+      });
+      return;
+    }
+
+    setIsResetting(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/confirm?next=/update-password`,
+      });
+
+      if (error) {
+        toast.error(error.message, {
+          duration: 5000,
+          icon: <Bell size={20} />,
+        });
+        return;
+      }
+
+      // Same message whether or not the account exists
+      toast.success(
+        "If an account exists for that email, a reset link is on its way.",
+        { duration: 8000, icon: <Bell size={20} /> },
+      );
+    } catch {
+      toast.error("Couldn't send the reset email. Please try again soon.", {
+        duration: 5000,
+        icon: <Bell size={20} />,
+      });
+    } finally {
+      setIsResetting(false);
+    }
   };
 
   return (
@@ -110,8 +146,14 @@ export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
           <Button size="lg" type="button" onClick={(e) => handleLogin(e)}>
             {!isSubmitting ? "Login" : <Spinner />}
           </Button>
-          <Button size="lg" variant="outline" type="button">
-            Forgot Password
+          <Button
+            size="lg"
+            variant="outline"
+            type="button"
+            onClick={handleForgotPassword}
+            disabled={loginData.username && !isResetting ? false : true}
+          >
+            {isResetting ? <Spinner /> : "Forgot Password"}
           </Button>
         </Field>
         <Field className="border-t-muted border-t-1 border-solid pt-3">

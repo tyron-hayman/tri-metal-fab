@@ -1,4 +1,4 @@
-import { client } from "../sanity/client";
+import { client } from "@/sanity/client";
 import LoginForm from "@/components/login/loigin-component";
 import { loginPageQuery, LoginPageQueryResult } from "@/sanity/queries";
 import { createClient } from "@/supabase/supabase-server";

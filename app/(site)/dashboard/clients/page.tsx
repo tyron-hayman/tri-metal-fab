@@ -27,7 +27,13 @@ export default async function Page() {
           />
           <div className="p-10">
             <ClientTableNav />
-            <DataTable columns={clientColumns} data={clientList as any} />
+            {clientList && clientList.length > 0 ? (
+              <DataTable columns={clientColumns} data={clientList as any} />
+            ) : (
+              <p className="text-base text-foreground">
+                There are no clients to view.
+              </p>
+            )}
           </div>
         </>
       )}
