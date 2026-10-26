@@ -71,7 +71,7 @@ export function GlobalSidebar() {
               <li key={`menuItem${index}`}>
                 <Link
                   href={menuItem.link}
-                  className={`w-full text-sm flex gap-3 items-center px-3 py-2 ${isActive ? "bg-[var(--accent)] text-white rounded-4xl" : ""}`}
+                  className={`w-full text-sm flex gap-3 items-center px-3 py-3 ${isActive ? "bg-foreground text-background" : ""}`}
                 >
                   <menuItem.icon size={16} />
                   <span>{menuItem.title}</span>
@@ -98,9 +98,6 @@ export function GlobalSidebar() {
               </a>
             </p>
           </div>
-        </SidebarGroup>
-        <SidebarGroup>
-          <ThemeSwitch />
         </SidebarGroup>
       </SidebarFooter>
     </Sidebar>

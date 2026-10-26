@@ -21,11 +21,13 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { createClient } from "@/supabase/supabase-client";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/providers/user-provider";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
   const supabase = createClient();
   const router = useRouter();
+  const { placeHolderAvatar } = useUser();
 
   const signOut = async (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -54,22 +56,42 @@ export function NavUser({ user }: { user: User }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-accent data-[state=open]:text-sidebar-accent-foreground border-[var(--sidebar-border)] border-1 rounded-2xl p-5"
+              className="data-[state=open]:bg-accent data-[state=open]:text-sidebar-accent-foreground border-[var(--sidebar-border)] border-1 p-5"
             >
               <div className="grid flex-1 text-left text-sm leading-tight">
                 {user?.user_metadata.display_name ? (
-                  <span className="truncate font-medium">
-                    {user?.user_metadata.display_name}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-[25px] h-[25px] bg-black relative rounded-full overflow-hidden">
+                      <div
+                        className="absolute inset-0 !bg-cover"
+                        style={{
+                          background: `url("https://api.dicebear.com/10.x/disco/svg?backgroundColor=&patternProbability=100&shapeVariant=circle&shapeColor=ffffff&seed=${user.email}") center center no-repeat`,
+                        }}
+                      ></div>
+                    </div>
+                    <span className="truncate font-medium">
+                      {user?.user_metadata.display_name}
+                    </span>
+                  </div>
                 ) : (
-                  <span className="truncate font-medium">{user.email}</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-[25px] h-[25px] bg-black relative rounded-full overflow-hidden">
+                      <div
+                        className="absolute inset-0 !bg-cover"
+                        style={{
+                          background: `url("https://api.dicebear.com/10.x/disco/svg?backgroundColor=&patternProbability=100&shapeVariant=circle&shapeColor=ffffff&seed=${user.email}") center center no-repeat`,
+                        }}
+                      ></div>
+                    </div>
+                    <span className="truncate font-medium">{user?.email}</span>
+                  </div>
                 )}
               </div>
               <MoreVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}

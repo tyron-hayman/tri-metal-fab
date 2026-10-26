@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const ref = process.env.SUPABASE_PROJECT_REF!;
+const ref = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID!;
 const mgmt = `https://api.supabase.com/v1/projects/${ref}`;
 const headers = {
   Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}`,

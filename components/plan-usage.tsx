@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { FREE_LIMITS, GB, MB, type UsageKey } from "@/lib/plan-limits";
 import { motion, animate } from "motion/react";
+import { User } from "lucide-react";
+import { useUser } from "@/providers/user-provider";
 
 type Snapshot = { collected_at: string; data: Record<UsageKey, number> };
 type Payload = {
@@ -52,6 +54,7 @@ function status(pct: number) {
 export default function PlanUsage() {
   const [payload, setPayload] = useState<Payload | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { placeHolderAvatar } = useUser();
 
   useEffect(() => {
     let active = true;
@@ -88,6 +91,8 @@ export default function PlanUsage() {
   };
   const keys = Object.keys(FREE_LIMITS) as UsageKey[];
 
+  console.log(payload);
+
   return (
     <div className="mx-10">
       <div
@@ -98,9 +103,9 @@ export default function PlanUsage() {
         }}
       >
         <h2 style={{ margin: 0 }}>
-          Supabase Free plan usage
-          <span className="rounded-full text-xs bg-[var(--foreground)]/10 px-5 py-2 ml-5">
-            Your Plan
+          Supabase Usage
+          <span className="text-xs bg-[var(--foreground)]/10 px-5 py-2 ml-5">
+            Free Plan
           </span>
         </h2>
         {payload?.cycle && (
@@ -135,6 +140,10 @@ export default function PlanUsage() {
             );
             const s = status(worst);
 
+            const TOTAL = current;
+            const MAX_VISIBLE = 20;
+            const remaining = Math.max(TOTAL - MAX_VISIBLE, 0);
+
             return (
               <div key={key}>
                 <div
@@ -146,8 +155,7 @@ export default function PlanUsage() {
                 >
                   <strong>{def.label}</strong>
                   <span
-                    className={`text-xs uppercase rounded-full px-5 py-1 text-[var(--background)]`}
-                    style={{ background: s.color, fontWeight: 600 }}
+                    className={`text-xs font-semibold uppercase text-[var(--foreground)]`}
                   >
                     {s.label}
                   </span>
@@ -156,25 +164,64 @@ export default function PlanUsage() {
                   {fmt(key, current)} of {fmt(key, def.limit)} (
                   {(pct * 100).toFixed(1)}%)
                 </div>
-                <div
-                  style={{
-                    height: 8,
-                    borderRadius: 4,
-                    background: "rgba(128,128,128,.25)",
-                    margin: "6px 0",
-                  }}
-                >
-                  <motion.div
-                    initial={{ width: "0%" }}
-                    whileInView={{ width: `${Math.min(100, pct * 100)}%` }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
+                {key != "mau" ? (
+                  <div
                     style={{
-                      height: "100%",
-                      borderRadius: 4,
-                      background: s.color,
+                      height: "20px",
+                      background: "rgba(128,128,128,.25)",
+                      margin: "6px 0",
                     }}
-                  />
-                </div>
+                  >
+                    <motion.div
+                      initial={{ width: "0%" }}
+                      whileInView={{ width: `${Math.min(100, pct * 100)}%` }}
+                      transition={{ duration: 0.5, delay: 0.1 }}
+                      style={{
+                        height: "100%",
+                        background:
+                          Math.min(100, pct * 100) < 49
+                            ? "#ffffff"
+                            : Math.min(100, pct * 100) > 49 &&
+                                Math.min(100, pct * 100) < 80
+                              ? "#f59e0b"
+                              : Math.min(100, pct * 100) > 79 &&
+                                  Math.min(100, pct * 100) <= 100
+                                ? "#f43f5e"
+                                : "",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="flex gap-1 items-center py-2 flex-wrap">
+                    {Array.from(
+                      { length: Math.min(TOTAL, MAX_VISIBLE) },
+                      (_, i) => (
+                        <motion.div
+                          key={i}
+                          className="w-[32px] aspect-square rounded-full border-black border-2 border-solid block relative"
+                          style={{
+                            background: `#000000 url("https://api.dicebear.com/10.x/disco/svg?backgroundColor=&patternProbability=100&shapeVariant=circle&shapeColor=ffffff&seed=${i}") center center no-repeat`,
+                            zIndex: i,
+                          }}
+                          initial={{ y: 30, opacity: 0 }}
+                          whileInView={{ y: 0, opacity: 1 }}
+                          transition={{ duration: 0.5, delay: 0.05 * i }}
+                        />
+                      ),
+                    )}
+
+                    {remaining > 0 && (
+                      <motion.p
+                        className="ml-2 text-sm font-medium text-white whitespace-nowrap"
+                        initial={{ y: 30, opacity: 0 }}
+                        whileInView={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        + {remaining}
+                      </motion.p>
+                    )}
+                  </div>
+                )}
                 <div style={{ fontSize: 13, opacity: 0.75 }}>
                   {projected != null
                     ? `Projected by end of cycle: ${fmt(key, projected)} (${((projected / def.limit) * 100).toFixed(0)}% of limit)`
@@ -196,18 +243,22 @@ export default function PlanUsage() {
         }}
       >
         <div>
-          <strong>If a limit is reached on Free:</strong> there are no extra
-          charges. After a grace period, the project can be restricted
-          (read-only database, paused, or API requests returning HTTP 402) until
-          usage resets or the plan is upgraded.
+          <p className="text-xs text-foreground/60">
+            <strong>If a limit is reached on Free:</strong> there are no extra
+            charges. After a grace period, the project can be restricted
+            (read-only database, paused, or API requests returning HTTP 402)
+            until usage resets or the plan is upgraded.
+          </p>
         </div>
         <div>
-          <strong>Upgrade option:</strong> Pro is $25/month and lifts
-          restrictions immediately.{" "}
-          {keys
-            .map((k) => `${FREE_LIMITS[k].label}: ${FREE_LIMITS[k].proNote}`)
-            .join(". ")}
-          .
+          <p className="text-xs text-foreground/60">
+            <strong>Upgrade option:</strong> Pro is $25/month and lifts
+            restrictions immediately.{" "}
+            {keys
+              .map((k) => `${FREE_LIMITS[k].label}: ${FREE_LIMITS[k].proNote}`)
+              .join(". ")}
+            .
+          </p>
         </div>
       </div>
     </div>

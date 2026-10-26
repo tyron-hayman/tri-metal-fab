@@ -26,7 +26,7 @@ export default async function RootLayout({
     .single();
 
   return (
-    <UserProvider user={user} profile={profile}>
+    <UserProvider user={user} profile={profile} placeHolderAvatar={``}>
       <TooltipProvider>
         <SidebarProvider>
           <GlobalSidebar />

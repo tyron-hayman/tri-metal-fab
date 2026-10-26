@@ -105,7 +105,7 @@ export default function SupabaseStats({ hours = 24 }: { hours?: number }) {
       <div>
         <h3 className="mb-5">
           App Service health
-          <span className="rounded-full text-xs bg-[var(--foreground)]/10 px-5 py-2 ml-5">
+          <span className="text-xs bg-[var(--foreground)]/10 px-5 py-2 ml-5">
             {lastRun && lastRun?.toUTCString()}
           </span>
         </h3>
@@ -118,7 +118,7 @@ export default function SupabaseStats({ hours = 24 }: { hours?: number }) {
               >
                 <p className="text-sm uppercase">{s.name}</p>
                 <p
-                  className={`text-xs uppercase rounded-full ${s.healthy ? "bg-green-500" : "bg-rose-500"} px-5 py-1`}
+                  className={`text-xs font-semibold uppercase ${s.healthy ? "text-white" : "text-rose-500"}`}
                 >
                   {s.healthy ? "healthy" : "unhealthy"}
                 </p>

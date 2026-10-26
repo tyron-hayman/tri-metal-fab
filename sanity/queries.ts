@@ -2,26 +2,16 @@
 
 export const loginPageQuery = `
   *[_type == "loginPage" && _id == "loginPage"][0] {
-  maintenanceMode,
     heading,
-    subheading,
-    formDisclaimer,
-    seo {
-      metaTitle,
-      metaDescription
-    }
+    content,
+    disclaimer
   }
 `;
 
 export type LoginPageQueryResult = {
-  maintenanceMode: boolean;
   heading: string | null;
-  subheading: string | null;
-  formDisclaimer: string | null;
-  seo: {
-    metaTitle: string | null;
-    metaDescription: string | null;
-  } | null;
+  content: string | null;
+  disclaimer: string | null;
 };
 
 // ── Dashboard Page ───────────────────────────────────────────────────────────

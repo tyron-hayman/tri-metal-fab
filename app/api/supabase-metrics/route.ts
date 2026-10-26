@@ -1,7 +1,7 @@
 export async function GET() {
-  const url = `https://${process.env.SUPABASE_PROJECT_REF}.supabase.co/customer/v1/privileged/metrics`;
+  const url = `https://${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}.supabase.co/customer/v1/privileged/metrics`;
   const auth = Buffer.from(
-    `service_role:${process.env.SUPABASE_SECRET_KEY}`,
+    `service_role:${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}`,
   ).toString("base64");
 
   const res = await fetch(url, {

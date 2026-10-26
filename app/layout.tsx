@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${lexendSans.variable} ${jetbrainsMono.variable}`}>
+      <body className={`${lexendSans.variable} ${jetbrainsMono.variable} dark`}>
         {children}
       </body>
     </html>

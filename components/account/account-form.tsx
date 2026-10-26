@@ -29,7 +29,7 @@ export default function UserAccountForm({
 }: {
   data: ProfilePageQueryResult;
 }) {
-  const { user, profile } = useUser();
+  const { user, profile, placeHolderAvatar } = useUser();
   const supabase = createClient();
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [accoutData, setAccountData] = useState<AccountData>({
@@ -127,7 +127,7 @@ export default function UserAccountForm({
       <form className="w-full">
         <div className="w-full flex flex-wrap items-start justify-between mb-20 pb-20 border-b-1 border-foreground/10 border-solid">
           <div className="w-3/12">
-            <h2 className="text-3xl text-foreground font-mono">Profile</h2>
+            <h2 className="text-2xl text-foreground font-mono">Profile</h2>
             <p className="text-sm text-[var(--muted-foreground)]">
               Your person details
             </p>
@@ -171,7 +171,7 @@ export default function UserAccountForm({
         </div>
         <div className="w-full flex flex-wrap items-start justify-between mb-20 pb-20 border-b-1 border-foreground/10 border-solid">
           <div className="w-3/12">
-            <h2 className="text-3xl text-foreground font-mono">Security</h2>
+            <h2 className="text-2xl text-foreground font-mono">Security</h2>
             <p className="text-sm text-[var(--muted-foreground)]">
               Your private account details
             </p>

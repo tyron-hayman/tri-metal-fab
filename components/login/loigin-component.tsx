@@ -156,11 +156,6 @@ export default function LoginForm({ data }: { data: LoginPageQueryResult }) {
             {isResetting ? <Spinner /> : "Forgot Password"}
           </Button>
         </Field>
-        <Field className="border-t-muted border-t-1 border-solid pt-3">
-          <p className="text-xs leading-relaxed text-foreground/50">
-            {data.formDisclaimer}
-          </p>
-        </Field>
       </FieldGroup>
     </form>
   );
