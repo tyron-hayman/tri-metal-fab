@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CircleCheck, TriangleAlert } from "lucide-react";
 
 type Row = {
   id: number;
@@ -92,8 +93,6 @@ export default function SupabaseStats({ hours = 24 }: { hours?: number }) {
     ? new Date(rows[rows.length - 1].collected_at)
     : null;
 
-  console.log(lastRun);
-
   return (
     <div className="grid grid-cols-1 gap-5 p-10">
       {error && (
@@ -110,18 +109,24 @@ export default function SupabaseStats({ hours = 24 }: { hours?: number }) {
           </span>
         </h3>
         {health?.ok ? (
-          <div className="border-[var(--foreground)]/10 border border-solid">
+          <div className="grid grid-cols-5 gap-5">
             {normalizeHealth(health.data).map((s, index) => (
-              <div
-                className={`flex items-center justify-between px-3 py-2 ${index % 2 != 0 && "bg-[var(--foreground)]/10"}`}
-                key={s.name}
-              >
-                <p className="text-sm uppercase">{s.name}</p>
-                <p
-                  className={`text-xs font-semibold uppercase ${s.healthy ? "text-white" : "text-rose-500"}`}
-                >
-                  {s.healthy ? "healthy" : "unhealthy"}
-                </p>
+              <div className={``} key={s.name}>
+                <p className="text-base uppercase font-black mb-5">{s.name}</p>
+                <div className={`border-border" border border-solid p-5`}>
+                  <p
+                    className={`text-xs font-semibold uppercase flex items-center gap-2 ${s.healthy ? "text-white" : "text-rose-500"}`}
+                  >
+                    <span>
+                      {s.healthy ? (
+                        <CircleCheck color="#84cc16" />
+                      ) : (
+                        <TriangleAlert color="#f59e0b" />
+                      )}
+                    </span>
+                    <span>{s.healthy ? "Active" : "Issues Reported"}</span>
+                  </p>
+                </div>
               </div>
             ))}
           </div>

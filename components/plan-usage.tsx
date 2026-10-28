@@ -91,8 +91,6 @@ export default function PlanUsage() {
   };
   const keys = Object.keys(FREE_LIMITS) as UsageKey[];
 
-  console.log(payload);
-
   return (
     <div className="mx-10">
       <div

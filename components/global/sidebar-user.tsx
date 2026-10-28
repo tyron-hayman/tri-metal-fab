@@ -56,7 +56,7 @@ export function NavUser({ user }: { user: User }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-accent data-[state=open]:text-sidebar-accent-foreground border-[var(--sidebar-border)] border-1 p-5"
+              className="data-[state=open]:bg-white data-[state=open]:text-background border-[var(--sidebar-border)] border-1 p-5"
             >
               <div className="grid flex-1 text-left text-sm leading-tight">
                 {user?.user_metadata.display_name ? (
